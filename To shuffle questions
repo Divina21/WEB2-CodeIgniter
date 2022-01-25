@@ -1,0 +1,19 @@
+	public function getData(){
+		$exam_id = $this->input->post('exam_id');
+
+		$exam_query['select'] = 'premier_modules.module_name, premier_exams.*';
+		// get the module names
+		$exam_query['join'] = array(
+			'premier_modules' => 'premier_modules.id = premier_exams.fk_module_id',
+		);
+		$exam_query['where'] = array('premier_exams.id'=>$exam_id);
+		$exam_data = $this->MY_Model->getRows('premier_exams',$exam_query)[0];
+		$exam_data_decode = json_decode($exam_data["exam_data"]); // gi convert ang $exam_data["exam_data"] from json to php object
+		$shuffle = shuffle($exam_data_decode); // after convert to php object ka gi shuffle
+		$exam_data_encode = json_encode($exam_data_decode); // after shuffle kay gi convert balik to json
+		$exam_data["exam_data"] = $exam_data_encode; // para ma change ang sulod sa $exam_data["exam_data"] to na shuffle na nga exam questions.
+		// echo '<pre>';
+		// print_r($exam_data); // Ang gamit ani kay para e display ang sulod sa $exam_data sa readable nga format 
+
+		echo json_encode($exam_data);	
+	}
