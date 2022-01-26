@@ -1,0 +1,15 @@
+ <a href="<?php echo base_url() ?>logout" class="dropdown-item"></a> //tawagon nimo ang contoller sa logout
+ 
+ // Logout Controller 
+ // Logout.php
+ 
+ <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Logout extends MY_Controller {
+
+	public function index(){
+		session_destroy();    // session_destroy — Destroys all data registered to a session
+		redirect(base_url()); // mo redirect after ma destroy ang session.
+	}
+}
