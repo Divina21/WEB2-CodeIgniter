@@ -1,0 +1,26 @@
+1. Kung debug ang karaan nga site, dili CI.
+
+global $wpdb;
+//print last SQL query string
+echo $wpdb->last-query;
+
+//print last SQL query result
+echo $wpdb->last_result;
+
+//print last SQL query error
+echo $wpdb->last_error;
+
+exit;
+
+2. Kung CI, Unya e echo /view ang last query sa DB.
+print_r($this->db->last-query());
+
+================================================
+
+• para makita unsay sulod sa $ .
+ Right click > Network > look for the function of a class
+    echo "<pre>";
+    print_r($module_name);
+    exit;
+    
+================================================
