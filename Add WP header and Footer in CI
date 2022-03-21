@@ -1,0 +1,101 @@
+Step 1:
+Go to: /public_html/system/application/core/MY_Controller.php
+Add this code:
+
+	public function load_wp_page($page,$data = array()){
+		$data['isCIPage'] = true;
+		$data['base_url'] = base_url();
+		$this->load->view('../../../wp-systcon/wp-load.php');
+		$this->load->view('../../../wp-content/themes/metrowestha/includes/head',$data);
+		$this->load->view('../../../wp-content/themes/metrowestha/includes/header');
+		$this->load->view('../../../wp-content/themes/metrowestha/includes/nav');
+		$this->load->view('../../../wp-content/themes/metrowestha/includes/banner',$data);
+		$this->load->view('includes/wp-head',$data);
+		$this->load->view($page,$data);
+		$this->load->view('includes/wp-footer',$data);
+		$this->load->view('../../../wp-content/themes/metrowestha/includes/footer',$data);
+	}
+  
+  Step 2:
+  Go to: /public_html/system/application/views/includes
+  Add these 2 files: wp-head.php and wp-footer.php
+  For wp-head.php, add this code inside the file:
+  
+ // code starts here
+  <div id="main_area">
+    <div class="wrapper">
+        <div class="main_con">
+            <div class="breadcrumbs">
+                <!-- Breadcrumb NavXT 6.4.0 -->
+                <span property="itemListElement" typeof="ListItem">
+                    <a property="item" typeof="WebPage" title="Go to Home." href="<?php echo base_url().'../' ?>" class="home"><span property="name">Home</span></a><meta property="position" content="1" />
+                </span>
+                &gt;
+                <span> <?php echo $pagetitle ?> </span>
+            </div>
+            <main>
+                <div id="post-162" class="post-162 page type-page status-publish hentry">
+                    <div class="entry-content">
+  // code ends here
+  
+  For wp-footer.php, add this code inside the file:
+
+// code starts here
+</div>
+<!-- .entry-content -->
+</div>
+<!-- #post-## -->
+
+</main>
+
+</div>
+<div class="clearfix"></div>
+</div>
+</div>
+// code ends here
+
+Step 3:
+Go to: /public_html/system/application/modules/admission/controllers/admission.php (or kung unsa imong controller nga gigamit)
+Use the function created from step 1. sample code below:
+
+// code starts here
+<?php
+error_reporting(0);
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Admission extends MY_Controller {
+	public function index(){
+		$data['title'] = 'Admission';
+		$data['pagetitle'] = 'Admission';
+		$this->load_wp_page('index',$data);
+	}
+}
+?>
+//code ends here
+
+Step 4:
+Go to: /public_html/wp-content/themes/themename/includes/banner.php
+Note: para ni siya ma change ang banner name sa imong gi create.
+Important: Pangitaa ang <div class="page_title"> ang opening ang closing tag dayon e change to kani ang code:
+
+// code starts here
+        <div class="page_title">
+             		  <?php if(!$isCIPage){ ?>
+             			  <?php if(!is_home() && !is_author() && !is_category() && !is_tag() && !is_single()) { ?>
+             		      <h1 class="h1_title"><?php the_title(); ?></h1>
+             		      <?php echo do_shortcode("[short_title id='" . get_the_ID() . "']"); ?>
+             		      <?php } else { ?>
+             		      <h1 class="h1_title">Blog</h1>
+             		      <?php } ?>
+             		  <?php } else { ?>
+             			  <h1 class="h1_title"><?php echo $pagetitle?></h1>
+             		  <?php } ?>
+        </div>
+// code ends here
+
+Done!!!
+
+======================
+
+
+
